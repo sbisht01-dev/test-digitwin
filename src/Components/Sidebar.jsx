@@ -1,25 +1,16 @@
-function Sidebar({ onIncrement, counterValue }) {
-  const itemStyle = {
-    padding: "12px 20px",
-    borderBottom: "1px solid #333",
-    cursor: "pointer",
-    backgroundColor: "#1e1e1e",
-    color: "white"
-  };
-
+function Sidebar({ onIncrement, currentSpeed }) {
   return (
-    <div style={{ width: "240px", backgroundColor: "#1e1e1e", height: "100vh" }}>
-      <div style={{ padding: "20px", color: "white", fontWeight: "bold" }}>
-        TFrenzy Dashboard
-      </div>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {/* Our Increment Button */}
-        <li style={itemStyle} onClick={onIncrement}>
-          ➕ Increment Counter ({counterValue})
-        </li>
-        <li style={itemStyle}>🏭 Blast Furnace</li>
-      </ul>
+    <div style={{ width: "240px", background: "#1a1a1a", color: "white", padding: "20px" }}>
+      <h2>TFrenzy Control</h2>
+      <p>Current Speed: {currentSpeed}</p>
+      <button 
+        onClick={onIncrement}
+        style={{ padding: "10px 20px", cursor: "pointer", width: "100%" }}
+      >
+        Increase Speed
+      </button>
     </div>
   );
 }
+
 export default Sidebar;

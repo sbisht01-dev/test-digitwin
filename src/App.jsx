@@ -1,11 +1,12 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+// Assuming you are using react-unity-webgl
 import { useUnityContext } from "react-unity-webgl";
 import Sidebar from "./Components/Sidebar";
 import UnityView from "./Components/UnityView";
-import ControlPanel from "./Components/ControlPanel";
-
+import { Unity } from "react-unity-webgl";
 function App() {
-
+  const [speed, setSpeed] = useState(0);
   const { unityProvider,sendMessage, isLoaded, progression } = useUnityContext({
     loaderUrl: "/Unity/Build/Unity.loader.js",
     dataUrl: "/Unity/Build/Unity.data",
@@ -13,28 +14,26 @@ function App() {
     codeUrl: "/Unity/Build/Unity.wasm",
   });
 
-  const [counter, setCounter] = useState(0);
 
-  // ... useUnityContext setup
-
+  // Function to handle the click from the sidebar
   function handleIncrement() {
-    const nextValue = counter + 1;
-    setCounter(nextValue);
+    const newSpeed = speed + 1;
+    setSpeed(newSpeed);
 
     if (isLoaded) {
-      // "StatusText" = Object Name in Unity
-      // "UpdateValueDisplay" = Function Name in C#
-      // nextValue = The data we are sending
-      sendMessage("StatusText", "UpdateValueDisplay", nextValue);
+      // Syntax: sendMessage("ObjectName", "MethodName", Value);
+      sendMessage("StatusText", "UpdateValueDisplay", newSpeed);
     }
   }
 
- 
   return (
-    <div style={{ display: "flex", height: "100vh", width: "100vw", overflow: "hidden" }}>
-     <Sidebar onIncrement={handleIncrement} counterValue={counter} />
-      <UnityView unityProvider={unityProvider} isLoaded={isLoaded} progression={progression} />
-      {/* <ControlPanel currentSpeed={speed} onUpdateSpeed={handleSpeedChange} /> */}
+    <div style={{ display: "flex", height: "100vh" }}>
+      {/* Pass the function to your Sidebar */}
+      <Sidebar onIncrement={handleIncrement} currentSpeed={speed} />
+      
+      <div style={{ flex: 1 }}>
+        <Unity unityProvider={unityProvider} style={{ width: "100%", height: "100%" }} />
+      </div>
     </div>
   );
 }
